@@ -42,7 +42,7 @@ extractTitle<-function(name){
     return("Miss.")
   }
   else if(length(grep("Master.",name))>0){
-    return("Master")
+    return("Master.")
   }
   else if(length(grep("Mrs.",name))>0){
     return("Mrs.")
@@ -68,5 +68,79 @@ ggplot(data.combined[1:891,],aes(x=Titles,fill=Survived))+
          xlab("Title")+
          ylab("Total Count")+
          labs(fill="Survived")
+
+ggplot(data.combined[1:891,],aes(x=Sex,fill=Survived))+
+        geom_bar(width=0.5)+
+        facet_wrap(~Pclass)+
+        ggtitle("Pclass")+
+        xlab("Sex")+
+        ylab("Total Count")+
+        labs(fill="Survived")
+        
+ summary(data.combined[1:891,"Age"]) 
+
+ ggplot(data.combined[1:891,],aes(x=Age,fill=Survived))+
+   geom_histogram(binwidth=10)+
+   facet_wrap(~Sex+Pclass)+
+   xlab("Age")+
+   ylab("Total Count")
+   
          
+boys<-data.combined[which(data.combined$Titles =="Master."),] 
+summary(boys$Age)
+
+ggplot(misses[misses$Survived != "None",],aes(x=Age,fill=Survived))+
+  geom_histogram(binwidth=5)+
+  facet_wrap(~Pclass)+
+  ggtitle("Age for Miss by Pclass")
+  xlab("Age")+
+  ylab("Total Count")
  
+misses.alone<-misses[which(misses$SibSp==0 & misses$Parch==0),]
+summary(misses.alone$Age)
+length(which(misses.alone$Age <=14.5))
+
+summary(data.combined$SibSp)
+  
+length(unique(data.combined$SibSp))
+
+data.combined$SibSp<-as.factor(data.combined$SibSp)
+
+ggplot(data.combined[1:891,],aes(x=SibSp,fill=Survived))+
+  geom_bar(width = 1)+
+  facet_wrap(~Pclass+Titles)+
+  ggtitle("Pclass,Title")+
+  xlab("Sibsp")+
+  ylab("Total Count")+
+  ylim(0,300)
+  labs(fill="Survived")
+  
+data.combined$Parch<-as.factor(data.combined$Parch)
+  
+ggplot(data.combined[1:891,],aes(x=Parch,fill=Survived))+
+    geom_bar(width = 1)+
+    facet_wrap(~Pclass+Titles)+
+    ggtitle("Pclass,Title")+
+    xlab("Parch")+
+    ylab("Total Count")+
+    ylim(0,300)
+  labs(fill="Survived")  
+
+temp.Sibsp<-c(train$SibSp,test$SibSp)
+temp.Parch<-c(train$Parch,test$Parch)
+
+data.combined$Family.size<-as.factor(temp.Parch+temp.Sibsp+1)
+
+ggplot(data.combined[1:891,],aes(x=Family.size,fill=Survived))+
+  geom_bar(width = 1)+
+  facet_wrap(~Pclass+Titles)+
+  ggtitle("Pclass,Title")+
+  xlab("Family.size")+
+  ylab("Total Count")+
+  ylim(0,300)
+labs(fill="Survived")   
+
+str(data.combined$Ticket)  
+  
+      
+  
