@@ -141,6 +141,108 @@ ggplot(data.combined[1:891,],aes(x=Family.size,fill=Survived))+
 labs(fill="Survived")   
 
 str(data.combined$Ticket)  
-  
+
+data.combined$Ticket<-as.character(data.combined$Ticket)
+data.combined$Ticket[1:20]
+
+Ticket.first.char<-ifelse(data.combined$Ticket==""," ",substr(data.combined$Ticket,1,1))
+sort(unique(Ticket.first.char))
+
+data.combined$Ticket.first.char<-as.factor(Ticket.first.char)
+
+
+ggplot(data.combined[1:891,],aes(x=Ticket.first.char,fill=Survived))+
+  geom_bar()+
+ ggtitle("Survived by Ticket.first.char")+
+  xlab("Ticket.first.char")+
+  ylab("Total Count")+
+  ylim(0,350)
+  labs(fill="Survived")     
+
+ggplot(data.combined[1:891,],aes(x=Ticket.first.char,fill=Survived))+
+    geom_bar()+
+    facet_wrap(~Pclass)+
+    ggtitle("Pclass")+
+    xlab("Ticket.first.cha")+
+    ylab("Total Count")+
+    ylim(0,300)
+    labs(fill="Survived")  
+  ggplot(data.combined[1:891,],aes(x=Ticket.first.char,fill=Survived))+
+      geom_bar()+
+      facet_wrap(~Pclass+Titles)+
+      ggtitle("Pclass Titles")+
+      xlab("Ticket.first.cha")+
+      ylab("Total Count")+
+      ylim(0,300)
+    labs(fill="Survived") 
+    
+summary(data.combined$Fare)
+length(unique(data.combined$Fare))
       
-  
+ggplot(data.combined[1:891,],aes(x=Fare,fill=Survived))+
+  geom_bar(width=5)+
+  ggtitle("Fare Distribution")+
+  xlab("Fare")+
+  ylab("Total Count")+
+  labs(fill="Survived")
+
+ggplot(data.combined[1:891,],aes(x=Fare,fill=Survived))+
+  geom_histogram(binwidth = 10)+
+  facet_wrap(~Pclass+Titles)+
+  ggtitle("Pclass Titles")+
+  xlab("Fare")+
+  ylab("Total Count")+
+  ylim(0,30)
+labs(fill="Survived") 
+
+str(data.combined$Cabin)
+
+data.combined$Cabin<-as.character(data.combined$Cabin)
+data.combined[which(data.combined$Cabin==""),"Cabin"] <- "U"
+
+
+Cabin.first.char<-as.factor(substr(data.combined$Cabin,1,1))
+str(data.combined$Cabin)
+levels(Cabin.first.char)
+
+data.combined$Cabin.first.char<-Cabin.first.char
+
+ggplot(data.combined[1:891,],aes(x=Cabin.first.char,fill=Survived))+
+  geom_bar()+
+  ggtitle("Survived by Cabin.first.char")+
+  xlab("Cabin.first.char")+
+  ylab("Total Count")+
+  ylim(0,350)+
+labs(fill="Survived")    
+ggplot(data.combined[1:891,],aes(x=Cabin.first.char,fill=Survived))+
+  geom_bar()+
+  facet_wrap(~Pclass)+
+  ggtitle("Pclass")+
+  xlab("Cabin.first.char")+
+  ylab("Total Count")+
+  ylim(0,300)+
+labs(fill="Survived")  
+
+
+data.combined$Cabin.multiple<-as.factor(ifelse(str_detect(data.combined$Cabin, " "),"Y","N"))
+
+ggplot(data.combined[1:891,],aes(x=Cabin.multiple,fill=Survived))+
+  geom_bar()+
+  facet_wrap(~Pclass+Titles)+
+  ggtitle("Pclass")+
+  xlab("Cabin.multiple")+
+  ylab("Total Count")+
+  ylim(0,300)+
+  labs(fill="Survived")  
+
+str(data.combined$Embarked)
+levels(data.combined$Embarked)
+
+ggplot(data.combined[1:891,],aes(x=Embarked,fill=Survived))+
+  geom_bar()+
+  facet_wrap(~Pclass+Titles)+
+  ggtitle("Pclass")+
+  xlab("Embarked")+
+  ylab("Total Count")+
+  ylim(0,300)+
+  labs(fill="Survived") 
